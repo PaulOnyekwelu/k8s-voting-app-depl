@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vote-app
+  labels:
+    app: vote-app
+    tier: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: vote-app-frontend
+  template:
+    metadata:
+      name: vote-app-frontend
+      labels:
+        tier: vote-app-frontend
+    spec:
+      containers:
+        - name: vote-app-frontend
+          image: silanka/va-k8s-vote
+          resources:
+            limits:
+              memory: "128Mi"
+              cpu: "250m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vote-app-service
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30001
+  selector:
+    tier: vote-app-frontend
