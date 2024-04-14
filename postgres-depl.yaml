@@ -8,6 +8,8 @@ spec:
   containers:
     - name: postgres-db
       image: postgres:alpine3.18
+      ports:
+        - containerPort: 5432
       resources:
         limits:
           memory: '128Mi'
@@ -17,16 +19,3 @@ spec:
           value: postgres
         - name: POSTGRES_PASSWORD
           value: 'postgres'
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: db
-spec:
-  type: ClusterIP
-  selector:
-    tier: postgres-db
-  ports:
-    - port: 5432
-      targetPort: 5432

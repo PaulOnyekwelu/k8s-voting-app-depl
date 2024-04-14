@@ -19,21 +19,9 @@ spec:
       containers:
         - name: vote-app-frontend
           image: silanka/va-k8s-vote
+          ports:
+            - containerPort: 80
           resources:
             limits:
               memory: "128Mi"
               cpu: "250m"
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: vote-app-service
-spec:
-  type: NodePort
-  ports:
-    - port: 80
-      targetPort: 80
-      nodePort: 30001
-  selector:
-    tier: vote-app-frontend
